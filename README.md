@@ -22,50 +22,49 @@ This project is a simple yet powerful **LAMP stack (Linux, Apache, MySQL, PHP)**
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ### Terraform Structure
 
-lamp-terraform
-    ├── README.md
-    ├── main.tf
-    ├── modules
-    │   ├── rds
-    │   │   ├── main.tf
-    │   │   ├── outputs.tf
-    │   │   └── variables.tf
-    │   └── web
-    │       ├── main.tf
-    │       ├── outputs.tf
-    │       └── variables.tf
-    ├── outputs.tf
-    ├── php-app
-    │   ├── config.php
-    │   ├── index.php
-    │   └── styles.css
-    ├── screenshot
-    │   └── lamp_stack_app.png
-    ├── terraform.tfstate
-    ├── terraform.tfstate.backup
-    ├── terraform.tfvars
-    ├── tfplan
-    ├── user_data.sh
-    └── variables.tf
+lamp-terraform/
+├── README.md
+├── main.tf
+├── modules/
+│   ├── rds/
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   └── web/
+│       ├── main.tf
+│       ├── outputs.tf
+│       └── variables.tf
+├── outputs.tf
+├── php-app/
+│   ├── config.php
+│   ├── index.php
+│   └── styles.css
+├── screenshot/
+│   └── lamp_stack_app.png
+├── terraform.tfstate
+├── terraform.tfstate.backup
+├── terraform.tfvars
+├── tfplan
+├── user_data.sh
+└── variables.tf
 
 ### /var/www/html/ structure
 
 /var/www/html/
-    ├── index.php # Main PHP file that handles DB interaction and displays visitor logs
-    ├── config.php # DB connection & table creation logic using environment variables
-    ├── styles.css # CSS file for styling the webpage
-
+├── index.php     # Main PHP file that handles DB interaction and displays visitor logs
+├── config.php    # DB connection & table creation logic using environment variables
+└── styles.css    # CSS file for styling the webpage
 
 ### S3 Bucket Contents
 
 php-app/
-    ├──index.php
-    ├──config.php
-    ├──styles.css
+├── index.php
+├── config.php
+└── styles.css
 
 ---
 
@@ -122,7 +121,7 @@ php-app/
 
 ---
 
-## 🚀 Deployment Steps
+## Deployment Steps
 
 ### 1. Prerequisites
 
