@@ -84,9 +84,9 @@ resource "aws_s3_object" "php_app" {
 resource "aws_autoscaling_group" "lamp_asg" {
   name_prefix          = "lamp-asg-"
   vpc_zone_identifier = var.public_subnets
-  desired_capacity    = 1
-  max_size           = 2
-  min_size           = 1
+  desired_capacity    = 2
+  max_size           = 3
+  min_size           = 2
 
   launch_template {
     id      = aws_launch_template.lamp_lt.id

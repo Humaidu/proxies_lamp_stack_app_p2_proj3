@@ -36,8 +36,8 @@ DB_PASSWORD=${db_password}
 DB_NAME=${db_name}
 EOL
 
+# Copy .env file to /var/www/html/
 cp /tmp/.env /var/www/html/
-
 
 # Copy app files from S3
 aws s3 cp s3://lamp-stack-app-bucket-0921/php-app/ /var/www/html/ --recursive
