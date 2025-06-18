@@ -8,3 +8,8 @@ variable "db_name" {
   type        = string
   default     = "lampdb"
 }
+
+variable "project_name" {
+  description = "Project name used in logs and metric namespaces"
+  type        = string
+}

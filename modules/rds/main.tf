@@ -1,17 +1,21 @@
-
+# Generate a random password for the database user (16 characters, no special chars)
 resource "random_password" "db_password" {
   length  = 16
   special = false
 }
 
+# Define the Secrets Manager secret that will store DB credentials
 resource "aws_secretsmanager_secret" "db_secret" {
   name = "lamp-db-credentials-${random_id.secret_suffix.hex}"
 }
 
+# Create a unique suffix to avoid naming collisions in Secrets Manager
 resource "random_id" "secret_suffix" {
   byte_length = 4
 }
 
+
+# Set the actual secret value with username, generated password, and DB name
 resource "aws_secretsmanager_secret_version" "db_secret_version" {
   secret_id = aws_secretsmanager_secret.db_secret.id
   secret_string = jsonencode({
@@ -21,11 +25,14 @@ resource "aws_secretsmanager_secret_version" "db_secret_version" {
   })
 }
 
+# Define a DB subnet group using the provided private subnets
 resource "aws_db_subnet_group" "lamp_db_subnet" {
   name       = "lamp-db-subnet-group"
   subnet_ids = var.private_subnets
 }
 
+
+# Create a security group for the RDS instance
 resource "aws_security_group" "rds_sg" {
   name        = "lamp-rds-sg"
   description = "Allow MySQL access from web servers"
@@ -35,7 +42,7 @@ resource "aws_security_group" "rds_sg" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # For demo only - restrict to web SG in production
+    security_groups = [var.web_sg_id]
   }
 
   tags = {
@@ -43,6 +50,8 @@ resource "aws_security_group" "rds_sg" {
   }
 }
 
+
+# Create the RDS MySQL database instance
 resource "aws_db_instance" "lamp_db" {
   identifier             = "lamp-mysql-db"
   engine                 = "mysql"

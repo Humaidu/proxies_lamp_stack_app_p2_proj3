@@ -224,7 +224,121 @@ High availability is achieved through a combination of design decisions:
 
 ---
 
+## Monitoring, Logging & Observability
+
+This document describes how observability is implemented for the LAMP stack deployed on AWS using Terraform, EC2, and CloudWatch.
+
+---
+
+### Components Used
+
+- **Amazon CloudWatch** – Central monitoring service
+- **CloudWatch Agent** – Installed on EC2 instances
+- **Log Groups** – Organized logs in CloudWatch
+- **EC2 IAM Roles** – Permissions to publish logs/metrics
+- **CloudWatch Dashboard** – Real-time visualization of metrics
+- **Alarms** – Notify based on performance thresholds
+
+---
+
+### Setup Summary
+
+#### IAM Role for EC2
+
+Each EC2 instance is assigned an IAM role (`lamp-cw-agent-role`) that allows:
+
+- Writing to CloudWatch Logs
+- Publishing custom metrics
+- Accessing SSM parameters (optional)
+
+#### CloudWatch Agent Installation
+
+The `user_data.sh` script handles:
+
+1. Installing CloudWatch Agent
+2. Writing the JSON config to:
+    - Collect logs:
+      - `/var/log/httpd/access_log`
+      - `/var/log/httpd/error_log`
+      - `/var/log/messages`
+    - Collect system metrics:
+      - Memory usage (%)
+      - CPU idle (%)
+3. Starting the agent via `amazon-cloudwatch-agent-ctl`
+
+#### Log Group Structure
+
+CloudWatch log groups created:
+
+- `/your-project-name/apache-access`
+- `/your-project-name/apache-error`
+- `/your-project-name/system-messages`
+
+Each EC2 instance logs under its own log stream (`{instance_id}`).
+
+---
+
+### Metrics Collected
+
+| Metric Type | Source | Description              |
+|-------------|--------|--------------------------|
+| CPU Idle %  | EC2    | Percentage of CPU idle   |
+| Memory %    | EC2    | Used memory percentage   |
+
+Metrics are grouped by EC2 instance ID via CloudWatch dimensions.
+
+---
+
+### Alerts (CloudWatch Alarms)
+
+Example alarm setup:
+
+- **Alarm Name:** `${project_name}-cpu-high`
+- **Metric:** `CPUUtilization`
+- **Threshold:** > 75% for 2 consecutive periods
+- **Actions:** (optional) SNS notification
+
+---
+
+### CloudWatch Dashboard
+
+A CloudWatch Dashboard `${project_name}-dashboard` is created with:
+
+- Line charts for CPU and Memory
+- Tables for Apache access and error logs
+- Table for system messages
+
+Access via:
+```
+CloudWatch > Dashboards > ${project_name}-dashboard
+
+```
+
+
+---
+
+### Verification
+
+To verify everything is working:
+
+```bash
+# Check CloudWatch Agent status
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a status
+
+# View logs in CloudWatch Console
+aws logs describe-log-groups
+
+```
+
+---
 ## Cleanup
+
+To remove monitoring resources only:
+
+```
+terraform destroy
+
+```
 
 To destroy all resources:
 

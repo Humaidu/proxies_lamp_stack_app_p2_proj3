@@ -13,3 +13,8 @@ variable "db_name" {
   type        = string
   default     = "lamp_db"
 }
+
+variable "web_sg_id" {
+  description = "The security group ID of the web server"
+  type        = string
+}

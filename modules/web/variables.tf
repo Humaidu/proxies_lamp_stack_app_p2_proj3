@@ -22,3 +22,14 @@ variable "key_name" {
   description = "Name of the SSH key pair"
   type        = string
 }
+
+variable "project_name" {
+  description = "Project name used in logs and metric namespaces"
+  type        = string
+  default = "lamp-stack-app"
+}
+
+variable "instance_profile_name" {
+  description = "Instance profile name for EC2"
+  type        = string
+}
