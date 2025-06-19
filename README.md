@@ -18,7 +18,7 @@ This project is a simple yet powerful **LAMP stack (Linux, Apache, MySQL, PHP)**
 
 ## Live App
 
-**http://lamp-alb-285155595.eu-west-1.elb.amazonaws.com/**
+**http://lamp-alb-729766375.eu-west-1.elb.amazonaws.com/**
 
 ---
 
@@ -276,6 +276,9 @@ CloudWatch log groups created:
 
 Each EC2 instance logs under its own log stream (`{instance_id}`).
 
+![LAMP Stack App CloudWatch log](screenshot/lamp-stack-app-cloudwatch-log-group.png)
+
+
 ---
 
 ### Metrics Collected
@@ -298,6 +301,8 @@ Example alarm setup:
 - **Threshold:** > 75% for 2 consecutive periods
 - **Actions:** (optional) SNS notification
 
+![LAMP Stack App CloudWatch Alarms](screenshot/lamp-stack-app-cloudwatch-overview.png)
+
 ---
 
 ### CloudWatch Dashboard
@@ -313,6 +318,8 @@ Access via:
 CloudWatch > Dashboards > ${project_name}-dashboard
 
 ```
+
+![LAMP Stack App Dashboard](screenshot/lamp-stack-app-cloudwatch-dashboard.png)
 
 
 ---

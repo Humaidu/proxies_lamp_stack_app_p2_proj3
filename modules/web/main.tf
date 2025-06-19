@@ -111,6 +111,19 @@ resource "aws_autoscaling_group" "lamp_asg" {
   max_size            = 3
   min_size            = 2
 
+  metrics_granularity = "1Minute"
+
+  enabled_metrics = [
+    "GroupMinSize",
+    "GroupMaxSize",
+    "GroupDesiredCapacity",
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupTerminatingInstances",
+    "GroupTotalInstances"
+  ]
+
   # Link to launch template
   launch_template {
     id      = aws_launch_template.lamp_lt.id

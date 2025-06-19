@@ -18,10 +18,17 @@ resource "aws_cloudwatch_dashboard" "lamp_dashboard" {
         properties = {
           title = "EC2 CPU Utilization",
           metrics = [
-            [ "CWAgent", "cpu_usage_idle", "InstanceId", "*" ]
+            [
+                {
+                    expression = "SEARCH('Namespace=\"CWAgent\" MetricName=\"cpu_usage_idle\"', 'Average', 300)",
+                    label      = "CPU Idle",
+                    id         = "e1"
+                }
+            ]
           ],
           period = 300,
           stat   = "Average",
+          view   = "timeSeries",
           region = var.aws_region
         }
       },
@@ -36,10 +43,17 @@ resource "aws_cloudwatch_dashboard" "lamp_dashboard" {
         properties = {
           title = "Memory Usage (%)",
           metrics = [
-            [ "CWAgent", "mem_used_percent", "InstanceId", "*" ]
+            [
+                {
+                    expression = "SEARCH('Namespace=\"CWAgent\" MetricName=\"mem_used_percent\"', 'Average', 300)",
+                    label      = "Memory Usage",
+                    id         = "e2"
+                }
+            ]
           ],
           period = 300,
           stat   = "Average",
+          view   = "timeSeries",
           region = var.aws_region
         }
       },
