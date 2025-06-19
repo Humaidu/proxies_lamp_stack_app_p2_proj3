@@ -1,13 +1,39 @@
 <?php
 require_once('config.php');
 
+$log_file_visits = '/var/log/php-app-visits.log';
+$log_file_errors = '/var/log/php-app-errors.log';
+
 $conn = getDBConnection();
-
-// Insert visitor info
 $ip = $_SERVER['REMOTE_ADDR'];
-$conn->query("INSERT INTO visitors (ip_address) VALUES ('$ip')");
 
-// Fetch recent visitors
+// Create log files if they don't exist (optional fail-safe)
+
+if (!file_exists($log_file_visits)) {
+  touch($log_file_visits);
+  chmod($log_file_visits, 0666); // Read/write for all
+}
+
+if (!file_exists($log_file_errors)) {
+  touch($log_file_errors);
+  chmod($log_file_errors, 0666);
+}
+
+try {
+    // Insert visitor IP into DB
+    $stmt = $conn->prepare("INSERT INTO visitors (ip_address) VALUES (?)");
+    $stmt->bind_param("s", $ip);
+    $stmt->execute();
+    $stmt->close();
+
+    // Log to visit file
+    error_log("[$ip] Visit at " . date("Y-m-d H:i:s") . "\n", 3, $log_file_visits);
+} catch (Exception $e) {
+    // Log to error file
+    error_log("[$ip] DB Error: " . $e->getMessage() . "\n", 3, $log_file_errors);
+}
+
+// Get recent visitors
 $result = $conn->query("SELECT * FROM visitors ORDER BY visit_time DESC LIMIT 10");
 ?>
 

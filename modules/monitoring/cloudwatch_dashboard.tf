@@ -1,5 +1,10 @@
 resource "aws_cloudwatch_dashboard" "lamp_dashboard" {
   dashboard_name = "${var.project_name}-dashboard"
+  
+  depends_on = [
+    aws_cloudwatch_log_group.php_app_visits,
+    aws_cloudwatch_log_group.php_app_errors  
+  ]
 
   dashboard_body = jsonencode({
     widgets = [
@@ -82,7 +87,38 @@ resource "aws_cloudwatch_dashboard" "lamp_dashboard" {
           region        = var.aws_region,
           view          = "table"
         }
+      },
+
+      # PHP App Visits Log
+      {
+        type = "log",
+        x    = 0,
+        y    = 24,
+        width = 24,
+        height = 6,
+        properties = {
+            title  = "PHP App Visits Log",
+            query  = "SOURCE '/${var.project_name}/php-app-visits' | fields @timestamp, @message | sort @timestamp desc | limit 20",
+            region = var.aws_region,
+            view   = "table"
+        }
+      },
+
+      # PHP App Errors Log
+      {
+        type = "log",
+        x    = 0,
+        y    = 30,
+        width = 24,
+        height = 6,
+        properties = {
+            title  = "PHP App Errors Log",
+            query  = "SOURCE '/${var.project_name}/php-app-errors' | fields @timestamp, @message | sort @timestamp desc | limit 20",
+            region = var.aws_region,
+            view   = "table"
+        }
       }
     ]
   })
 }
+

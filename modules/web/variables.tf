@@ -32,4 +32,6 @@ variable "project_name" {
 variable "instance_profile_name" {
   description = "Instance profile name for EC2"
   type        = string
+  default     = "lamp-stack-app-ec2-profile" 
+
 }

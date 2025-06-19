@@ -73,7 +73,7 @@ resource "aws_launch_template" "lamp_lt" {
 
   # Attach IAM role for EC2 with permissions for CloudWatch and S3
   iam_instance_profile {
-    name = var.instance_profile_name
+    name = aws_iam_instance_profile.ec2_profile.name
   }
 
   # Tag EC2 instances
@@ -182,7 +182,8 @@ data "aws_ami" "amazon_linux" {
 
 # IAM role to allow EC2 to use AWS services like CloudWatch and S3
 resource "aws_iam_role" "ec2_role" {
-  name = "lamp-ec2-role"
+  name = "lamp-stack-app-ec2-role"
+  # name_prefix
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -193,6 +194,23 @@ resource "aws_iam_role" "ec2_role" {
       }
     }]
   })
+}
+
+# cloudwatch_agent permission policy
+resource "aws_iam_role_policy_attachment" "cloudwatch_agent" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
+# Custom policy to create log groups and streams
+resource "aws_iam_role_policy_attachment" "logs" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_read" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
 }
 
 # Attach inline policy to EC2 role for reading S3 bucket contents
@@ -217,6 +235,7 @@ resource "aws_iam_role_policy" "s3_read" {
 
 # Create IAM Instance Profile for EC2 to attach the above role
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "lamp-ec2-profile"
+  name = "lamp-stack-app-ec2-profile"
   role = aws_iam_role.ec2_role.name
 }
+

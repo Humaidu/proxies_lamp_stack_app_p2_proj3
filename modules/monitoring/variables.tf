@@ -2,10 +2,11 @@
 variable "project_name" {
   type        = string
   description = "Project or service name used for labeling resources"
+  default = "lamp-stack-app"
 }
 
 # The name of the Auto Scaling Group for alarms
-variable "autoscaling_group_name" {
+variable "aws_autoscaling_group" {
   type        = string
   description = "Auto Scaling Group name for metrics/alarms"
 }

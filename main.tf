@@ -59,7 +59,8 @@ module "web" {
   # Project tag for resource identification
   project_name = var.project_name
 
-  instance_profile_name = module.monitoring.instance_profile_name
+  instance_profile_name = "lamp-stack-app-ec2-profile"
+
 }
 
 # ──────── Monitoring Module (e.g., CloudWatch) ────────
@@ -67,6 +68,7 @@ module "web" {
 module "monitoring" {
   source                  = "./modules/monitoring"
   project_name            = var.project_name
+
   # Reference to the Auto Scaling Group name in the web module
-  autoscaling_group_name = module.web.asg_name
+  aws_autoscaling_group = module.web.asg_name
 }
