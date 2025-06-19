@@ -56,16 +56,8 @@ This project is a simple yet powerful **LAMP stack (Linux, Apache, MySQL, PHP)**
     ├── tplan
     ├── user_data.sh
     └── variables.tf
-    
+
 ```
-
-### /var/www/html/ Folder Structure
-
-![/var/www/html/ structure](screenshot/web_structure.png)
-
-### S3 Bucket Contents
-
-![S3 Bucket Contents](screenshot/s3_structure.png)
 
 ---
 
