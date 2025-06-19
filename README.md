@@ -26,6 +26,8 @@ This project is a simple yet powerful **LAMP stack (Linux, Apache, MySQL, PHP)**
 
 ### Terraform Folder Structure
 
+```text
+
 └── lamp-terraform
     ├── README.md
     ├── main.tf
@@ -54,6 +56,8 @@ This project is a simple yet powerful **LAMP stack (Linux, Apache, MySQL, PHP)**
     ├── tplan
     ├── user_data.sh
     └── variables.tf
+    
+```
 
 ### /var/www/html/ Folder Structure
 
