@@ -26,7 +26,34 @@ This project is a simple yet powerful **LAMP stack (Linux, Apache, MySQL, PHP)**
 
 ### Terraform Folder Structure
 
-![Terraform Structure](screenshot/tf_structure.png)
+└── lamp-terraform
+    ├── README.md
+    ├── main.tf
+    ├── modules
+    │   ├── monitoring
+    │   ├── rds
+    │   └── web
+    ├── outputs.tf
+    ├── php-app
+    │   ├── config.php
+    │   ├── index.php
+    │   └── styles.css
+    ├── screenshot
+    │   ├── laamp-stack-archi.png
+    │   ├── lamp-stack-app-cloudwatch-dashboard.png
+    │   ├── lamp-stack-app-cloudwatch-log-group.png
+    │   ├── lamp-stack-app-cloudwatch-overview.png
+    │   ├── lamp_stack_app.png
+    │   ├── s3_structure.png
+    │   ├── tf_structure.png
+    │   └── web_structure.png
+    ├── terraform.tfstate
+    ├── terraform.tfstate.backup
+    ├── terraform.tfvars
+    ├── tfplan
+    ├── tplan
+    ├── user_data.sh
+    └── variables.tf
 
 ### /var/www/html/ Folder Structure
 
